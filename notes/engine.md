@@ -4,16 +4,14 @@
 
 ```
 type RouterGroup struct {
-	Handlers HandlersChain
-	basePath string
-	engine   *Engine
-	root     bool
+    Handlers HandlersChain
+    basePath string
+    engine   *Engine
+    root     bool
 }
 ```
 
 bool 是否是根
-
-
 
 用于Handlers 【】HandlerFunc
 
@@ -26,10 +24,10 @@ bool 是否是根
 // included in the handlers chain for every single request. Even 404, 405, static files...
 // For example, this is the right place for a logger or error management middleware.
 func (engine *Engine) Use(middleware ...HandlerFunc) IRoutes {
-	engine.RouterGroup.Use(middleware...)
-	engine.rebuild404Handlers()
-	engine.rebuild405Handlers()
-	return engine
+    engine.RouterGroup.Use(middleware...)
+    engine.rebuild404Handlers()
+    engine.rebuild405Handlers()
+    return engine
 }
 ```
 
@@ -40,15 +38,33 @@ func (engine *Engine) Use(middleware ...HandlerFunc) IRoutes {
 ```
 // Use adds middleware to the group, see example code in GitHub.
 func (group *RouterGroup) Use(middleware ...HandlerFunc) IRoutes {
-	group.Handlers = append(group.Handlers, middleware...)
-	return group.returnObj()
+    group.Handlers = append(group.Handlers, middleware...)
+    return group.returnObj()
 }
 ```
 
 基本就是吧handler 加进去
 
-
-
 然后回到engine的use 这里 rebuild404Handlers
 
 
+
+## 2 ServeHTTP
+
+```
+// ServeHTTP conforms to the http.Handler interface.
+func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	c := engine.pool.Get().(*Context)
+	c.writermem.reset(w)
+	c.Request = req
+	c.reset()
+
+	engine.handleHTTPRequest(c)
+
+	engine.pool.Put(c)
+}
+```
+
+大概就是
+
+牛逼
