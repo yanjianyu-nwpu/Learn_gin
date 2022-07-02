@@ -48,4 +48,33 @@ context 是重要概念，中间件中间传递数据
         sameSite http.SameSite
     }                                                                                                                        
 
-## 下面
+## 详解
+
+这里Default 函数,这里router 记录所有的routergroup 整个router group 文件
+
+```
+type RouterGroup struct {
+    Handlers HandlersChain
+    basePath string
+    engine   *Engine
+    root     bool
+}
+```
+
+```
+
+```
+
+这里是 use 中间件是再router group 上添加的
+
+这里handlers 就是整个group的handle 
+
+
+
+
+
+## 整体研究一下所有的功能就好了
+
+### 1.0  获取路径中的参数
+
+这里有获取

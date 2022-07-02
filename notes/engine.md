@@ -310,11 +310,3 @@ walk: // Outer loop for walking the tree
 有个跳出多重循环的 break label
 
  walk 这样
-
-Engine.RoutergGroup 其中的Hnadlers存储所有的中间件
-
-Engine.trees 负责存储路由和handle方法的映射，采用类似字典树 的结构
-
-
-
-## 注册中间件 gin的高性能
