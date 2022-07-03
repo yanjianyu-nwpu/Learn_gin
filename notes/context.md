@@ -69,12 +69,63 @@ type RouterGroup struct {
 
 这里handlers 就是整个group的handle 
 
-
-
-
-
 ## 整体研究一下所有的功能就好了
 
 ### 1.0  获取路径中的参数
 
-这里有获取
+ 这里有获取 真实的 name 这里接如                                                                       
+
+```
+// Param returns the value of the URL param.
+// It is a shortcut for c.Params.ByName(key)
+//     router.GET("/user/:id", func(c *gin.Context) {
+//         // a GET request to /user/john
+//         id := c.Param("id") // id == "john"
+//     })
+func (c *Context) Param(key string) string {
+    return c.Params.ByName(key)
+}
+```
+
+这里获得 key value 的结果
+
+在context 中会有专门的字段params  param 是kv
+
+是一个list 会for 循环get的
+
+gin 路径中的参数
+
+```
+/user/:name
+这种只能匹配 
+```
+
+这种结果/user/bill 能 但 ./USER/bill/ /user/bill/不 能匹配
+
+但是/user/*t
+
+可以匹配 上面
+
+### DefaultQuery
+
+GetQuery 用于获取参数
+
+比如这种 /welcome 可以拿到 
+
+GetQuery 这种
+
+```
+/welcome?firstname=Jane&lastname=Doe
+```
+
+这样的结果
+
+这里Post 有PotForm 结果
+
+## 路由分组
+
+然后为了方便管理
+
+```
+
+```
