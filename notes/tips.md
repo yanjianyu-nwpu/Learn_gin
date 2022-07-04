@@ -107,4 +107,64 @@ html 模板
 c.Redirect(http.StatusMovedPermanently, "http://www.google.com/")
 ```
 
-## 8 自定义中间件
+## 8 # BasicAuth()（验证）中间件
+
+这里没搞明白
+
+
+
+## 9 HTTP 协议参数设置
+
+可以内嵌在net/http的服务上干
+
+```
+func main() {
+	router := gin.Default()
+
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        router,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	s.ListenAndServe()
+}
+```
+
+## 10 HTTPS 证书设置
+
+这里 Let's encrypt 证书
+
+```
+package main
+
+import (
+	"log"
+
+	"github.com/gin-gonic/autotls"
+	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/acme/autocert"
+)
+
+func main() {
+	r := gin.Default()
+
+	// Ping handler
+	r.GET("/ping", func(c *gin.Context) {
+		c.String(200, "pong")
+	})
+
+	m := autocert.Manager{
+		Prompt:     autocert.AcceptTOS,
+		HostPolicy: autocert.HostWhitelist("example1.com", "example2.com"),
+		Cache:      autocert.DirCache("/var/www/.cache"),
+	}
+
+	log.Fatal(autotls.RunWithManager(r, &m))
+}
+```
+
+
+
+## 11 优雅启停
